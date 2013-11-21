@@ -452,6 +452,10 @@ class Query implements \Iterator, \Countable, Observer\Subject
 
         $data = $this->_processRow($result);
 
+        if ($data === null) {
+            return null;
+        }
+
         if ($this->_anonymous === true) {
             $object = $this->getMetadata()->mapToAnonymous($data, $this->_targets);
         } else {
@@ -680,6 +684,11 @@ class Query implements \Iterator, \Countable, Observer\Subject
     {
 
         $data = $this->_processRow($this->_stmtResult);
+
+        if ($data === null) {
+            return null;
+        }
+
         if ($this->_anonymous === true) {
             $object = $this->getMetadata()->mapToAnonymous($data, $this->_targets);
         } else {

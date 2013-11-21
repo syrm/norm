@@ -775,4 +775,24 @@ class Query implements \Iterator, \Countable, Observer\Subject
     }
 
 
+    public function __toString()
+    {
+
+        $sql = $this->getSql();
+
+        foreach($this->getValues() as $key => $value) {
+            $type = gettype($value);
+
+            if ($type !== "integer" && $type !== "double") {
+                $value = "'" . $value . "'";
+            }
+
+            $sql = str_replace($key, $value, $sql);
+        }
+
+        return $sql;
+
+    }
+
+
 }

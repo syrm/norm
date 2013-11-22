@@ -79,17 +79,29 @@ class Model
     }
 
 
+    public static function all()
+    {
+
+        $metadata = self::getMetadata();
+        $table = $metadata->getTable(get_called_class());
+        $q = self::staticGetQuery();
+        $q->from($table);
+        return $q;
+
+    }
+
+
     public static function __callStatic($name, $value)
     {
 
-        $action = substr($name, 0, 5);
-
-        if ($action === 'getBy') {
+        if (substr($name, 0, 5) === 'getBy') {
             $action = 'get';
             $name = lcfirst(substr($name, 5));
-        } else {
+        } elseif (substr($name, 0, 6) === 'findBy') {
             $action = 'find';
             $name = lcfirst(substr($name, 6));
+        } else {
+            throw new \Exception('Call to undefined method ' . get_called_class() . '::' . $name . '()');
         }
 
         $names = preg_split('/And(?<![A-Z])/', $name);

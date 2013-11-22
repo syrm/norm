@@ -583,7 +583,7 @@ class Query implements \Iterator, \Countable, Observer\Subject
         $this->_stmtData = $connection->prepare($sql);
 
         if ($connection->error() !== false) {
-            trigger_error($connection->error(), E_USER_ERROR);
+            throw new \Exception($connection->error());
         }
 
         if ($types !== "") {

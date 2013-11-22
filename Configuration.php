@@ -65,7 +65,7 @@ class Configuration
     {
 
         if (isset($this->_configConnections[$name]) === false) {
-            trigger_error("Use of undefined configuration '" . $name . "'", E_USER_ERROR);
+            throw new \Exception("Use of undefined configuration '" . $name . "'");
         }
 
         if (isset($this->_connections[$name]) === false) {

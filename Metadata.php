@@ -26,8 +26,14 @@ class Metadata implements Adapter\Metadata
     protected function __construct()
     {
 
-        $cache     = Configuration::getInstance()->getCache();
         $directory = Configuration::getInstance()->getModel();
+
+        if ($directory === null) {
+            $this->_metadata = array();
+            return;
+        }
+
+        $cache = Configuration::getInstance()->getCache();
 
         $classes   = array();
         $metadata  = array();

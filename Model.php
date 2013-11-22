@@ -164,7 +164,7 @@ class Model
             $this->$name = $this->_cast($value[0], $type);
             return $this;
         } else {
-            if (isset($this->$name) === false) {
+            if (property_exists($this, $name) === false) {
                 throw new \Exception('Undefined property: ' . get_called_class() . '::' . $name);
             }
 

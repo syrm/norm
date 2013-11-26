@@ -243,6 +243,25 @@ class Model
     }
 
 
+    public function delete()
+    {
+
+        $class    = get_called_class();
+        $metadata = self::getMetadata();
+        $table    = $metadata->getTable($class);
+        $column   = $metadata->getPrimary($table);
+
+        if ($column === null) {
+            $this->_throwNoPrimary('delete');
+        }
+
+        $q = $this->getQuery();
+        return $q->delete($table)->where($column['key'] . ' = :' . $column['key'],
+            array(':' . $column['key'] => $this->{$column['params']['name']}))->execute();
+
+    }
+
+
     protected function _save($mode)
     {
 
@@ -271,8 +290,17 @@ class Model
                     ->set($columns)
                     ->execute();
         } else {
+            if ($column === null) {
+                $this->_throwNoPrimary('update');
+            }
+
+            if ($this->$column['params']['name'] === null) {
+                throw new \Exception('Can\'t update : primary is null');
+            }
+
             unset($columns[$column['key']]);
 
+            // return is not an id
             $id = $q->update($table)
                     ->set($columns)
                     ->where($column['key'] . ' = :' . $column['key'], array(':' . $column['key'] => $this->$column['params']['name']))
@@ -281,13 +309,20 @@ class Model
 
         if (is_numeric($id) === true) {
             if ($mode === 'insert') {
-                $this->$column['params']['name'] = $id;
+                if ($column !== null) {
+                    $this->$column['params']['name'] = $id;
+                }
             }
             return true;
         } else {
             return false;
         }
 
+    }
+
+
+    protected function _throwNoPrimary($action) {
+        throw new \Exception('Can\'t ' . $action . ' : no primary defined in model');
     }
 
 

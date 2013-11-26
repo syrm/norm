@@ -13,3 +13,5 @@ $city->save();
 // City populated by the auto increment id
 var_dump($city);
 
+$city->delete();
+

@@ -44,9 +44,39 @@ class Metadata implements Adapter\Metadata
         }
 
         foreach(glob($directory) as $file) {
-                preg_match_all('/\s+class (.+?)\s/i', file_get_contents($file), $matches);
-                $classes = array_merge($classes, $matches[1]);
-                require_once $file;
+            $next = null;
+            $data = array('T_NAMESPACE' => '');
+            foreach(token_get_all(file_get_contents($file)) as $element) {
+                if (is_array($element) === true) {
+                    if (in_array($element[0], array(T_NAMESPACE, T_CLASS)) === true) {
+                        $next = $element[0];
+                    }
+
+                    if ($next === T_NAMESPACE && in_array($element[0], array(T_STRING, T_NS_SEPARATOR)) === true) {
+                        $data[token_name($next)] .= $element[1];
+                    }
+
+                    if ($next === T_CLASS && $element[0] === T_STRING) {
+                        $data[token_name($next)] = $element[1];
+                        $next = null;
+
+                        if (isset($data['T_CLASS']) === true) {
+                            if ($data['T_NAMESPACE'] !== '') {
+                                $fqn = '\\' . $data['T_NAMESPACE'] . '\\';
+                            } else {
+                                $fqn = '\\';
+                            }
+
+                            $fqn .= $data['T_CLASS'];
+
+                            $classes[] = $fqn;
+                            $data = array('T_NAMESPACE' => '');
+                        }
+                    }
+                }
+            }
+
+            require_once $file;
         }
 
         foreach($classes as $class) {
@@ -131,7 +161,7 @@ class Metadata implements Adapter\Metadata
     {
 
         foreach($this->_metadata as $table => $columns) {
-            if ($columns['class'] === $class) {
+            if ($columns['class'] === '\\' . $class) {
                 return $table;
             }
         }

@@ -109,6 +109,10 @@ class Model
         $metadata = self::getMetadata();
         $table = $metadata->getTable(get_called_class());
 
+        if ($table === null) {
+            throw new \Exception('Can\'t find sql table name for ' . get_called_class());
+        }
+
         $q = self::staticGetQuery();
         $q->from($table);
 

@@ -86,6 +86,9 @@ class Configuration
     public function setModel($path)
     {
 
+        if (is_array($path) === false) {
+            $path = array($path);
+        }
 
         $this->_model = $path;
 

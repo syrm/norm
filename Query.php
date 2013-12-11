@@ -341,10 +341,7 @@ class Query implements \Iterator, \Countable, Observer\Subject
                 $values = array();
 
                 foreach($this->_query['set'] as $key => $value) {
-                    if (is_string($value) === true) {
-                        $value = '\'' . Configuration::getInstance()->getConnection($this->_connection)->escape($value) . '\'';
-                    }
-
+                    $value = $this->_convertValue($value);
                     $values[] = $value;
                     $names[] = $key;
                 }
@@ -363,10 +360,7 @@ class Query implements \Iterator, \Countable, Observer\Subject
                 $columns = array();
 
                 foreach($this->_query['set'] as $key => $value) {
-                    if (is_string($value) === true) {
-                        $value = '\'' . Configuration::getInstance()->getConnection($this->_connection)->escape($value) . '\'';
-                    }
-
+                    $value = $this->_convertValue($value);
                     $columns[] = $key . ' = ' . $value;
                 }
 
@@ -771,6 +765,20 @@ class Query implements \Iterator, \Countable, Observer\Subject
         $this->_numberRows = (int) $data[0]->value;
 
         return $this->_numberRows;
+
+    }
+
+
+    public function _convertValue($value)
+    {
+
+        if (is_string($value) === true) {
+            $value = '\'' . Configuration::getInstance()->getConnection($this->_connection)->escape($value) . '\'';
+        } else if (is_object($value) === true && get_class($value) === 'DateTime') {
+            $value = '\'' . $value->format('Y-m-d H:i:s') . '\'';
+        }
+
+        return $value;
 
     }
 

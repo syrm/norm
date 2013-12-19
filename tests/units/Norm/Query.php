@@ -515,7 +515,7 @@ class Query extends atoum\test
 
         };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $teamRef = new \Team();
         $teamRef->setId(3);
@@ -552,7 +552,7 @@ class Query extends atoum\test
         $databaseStatementMock->getMockController()->execute = $databaseStatementMock;
         $databaseStatementMock->getMockController()->getResult = null;
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -598,7 +598,7 @@ class Query extends atoum\test
 
         };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -672,7 +672,7 @@ class Query extends atoum\test
         $databaseStatementMock->getMockController()->execute = $databaseStatementMock;
         $databaseStatementMock->getMockController()->getResult = $databaseResultMock;
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -711,7 +711,7 @@ class Query extends atoum\test
         $databaseStatementMock->getMockController()->getResult = $databaseResultMock;
         $databaseStatementMock->getMockController()->getAffectedRows = 5;
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -764,7 +764,7 @@ class Query extends atoum\test
 
         };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -799,7 +799,7 @@ class Query extends atoum\test
         $databaseMock->getMockController()->getErrorMessage = 'Bouh query broken';
         $databaseMock->getMockController()->prepare = false;
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -833,7 +833,7 @@ class Query extends atoum\test
         $databaseStatementMock->getMockController()->getResult = $databaseResultMock;
         $databaseStatementMock->getMockController()->getAffectedRows = 5;
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -906,7 +906,7 @@ class Query extends atoum\test
 
         };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -944,7 +944,7 @@ class Query extends atoum\test
 
         $databaseResultMock->getMockController()->fetchFields = function() { return null; };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $this
             ->if($q = new \Norm\Query())
@@ -1018,7 +1018,7 @@ class Query extends atoum\test
 
         };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $team = new \Team;
         $team->setId(3);
@@ -1088,7 +1088,7 @@ class Query extends atoum\test
 
         };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         $team = new \Team;
         $team->setId(3);

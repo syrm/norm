@@ -29,7 +29,7 @@ class Model extends atoum\test
     public function testToString()
     {
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
         \Match::setMetadata(\Norm\Metadata::getInstance());
 
         $this
@@ -46,7 +46,7 @@ class Model extends atoum\test
     public function testMagicCall()
     {
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
         \Match::setMetadata(\Norm\Metadata::getInstance());
 
         $this
@@ -78,7 +78,7 @@ class Model extends atoum\test
         \Norm\Configuration::getInstance()->setConnection('', '', '', '', 'default');
         \Norm\Configuration::getInstance()->setDatabase($databaseMock);
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
         \Match::setMetadata(\Norm\Metadata::getInstance());
         \Match::staticSetQuery($queryMock);
 
@@ -107,10 +107,10 @@ class Model extends atoum\test
 
         \Norm\Configuration::getInstance()->setConnection('', '', '', '', 'default');
         \Norm\Configuration::getInstance()->setDatabase($databaseMock);
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
 
         \Team::setMetadata(\Norm\Metadata::getInstance());
-        \Team::setStaticQuery($queryMock);
+        \Team::staticSetQuery($queryMock);
 
         $this
             ->if($team = \Team::findByName("Test"))
@@ -133,7 +133,7 @@ class Model extends atoum\test
         $databaseMock->getMockController()->connect = $databaseMock;
         $databaseMock->getMockController()->escape = function($value) { return $value; };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
         \Norm\Configuration::getInstance()->setConnection('', '', '', '', 'default');
         \Norm\Configuration::getInstance()->setDatabase($databaseMock);
 
@@ -171,7 +171,7 @@ class Model extends atoum\test
         $databaseMock->getMockController()->connect = $databaseMock;
         $databaseMock->getMockController()->escape = function($value) { return $value; };
 
-        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php');
+        \Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model');
         \Norm\Configuration::getInstance()->setConnection('', '', '', '', 'default');
         \Norm\Configuration::getInstance()->setDatabase($databaseMock);
 

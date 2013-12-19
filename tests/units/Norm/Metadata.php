@@ -28,7 +28,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($table = $metadata->getTable('Match'))
             ->then
@@ -42,7 +42,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($table = $metadata->getTable('NotFound'))
             ->then
@@ -56,7 +56,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($primary = $metadata->getPrimary('T_MATCH_MAT'))
             ->then
@@ -77,7 +77,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($primary = $metadata->getPrimary('T_TABLE_NO_PRIMARY_TNP'))
             ->then
@@ -91,7 +91,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($primary = $metadata->getPrimary('NotFound'))
             ->then
@@ -105,12 +105,12 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($class = $metadata->getClass('T_MATCH_MAT'))
             ->then
                 ->string($class)
-                ->isIdenticalTo('Match');
+                ->isIdenticalTo('\Match');
 
     }
 
@@ -119,7 +119,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($class = $metadata->getClass('T_NOT_FOUND_NFO'))
             ->then
@@ -149,7 +149,7 @@ class Metadata extends atoum\test
         );
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($columns = $metadata->getColumns('T_TEAM_TEA'))
             ->then
@@ -163,7 +163,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($columns = $metadata->getColumns('T_NOT_FOUND_NFO'))
             ->then
@@ -177,7 +177,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($columns = $metadata->getColumns('T_TABLE_NO_COLUMNS_TNC'))
             ->then
@@ -197,7 +197,7 @@ class Metadata extends atoum\test
         );
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($column = $metadata->getColumnByName('T_TEAM_TEA', '_name'))
             ->then
@@ -211,7 +211,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($column = $metadata->getColumnByName('T_NOT_FOUND_NFO', '_name'))
             ->then
@@ -225,7 +225,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($column = $metadata->getColumnByName('T_TABLE_NO_COLUMNS_TNC', '_name'))
             ->then
@@ -239,7 +239,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($column = $metadata->getColumnByName('T_TEAM_TEA', '_notFound'))
             ->then
@@ -258,7 +258,7 @@ class Metadata extends atoum\test
         );
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($column = $metadata->getColumnByKey('T_TEAM_TEA', 'tea_name'))
             ->then
@@ -272,7 +272,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($column = $metadata->getColumnByKey('T_NOT_FOUND_NFO', 'tea_name'))
             ->then
@@ -286,7 +286,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($column = $metadata->getColumnByKey('T_TABLE_NO_COLUMNS_TNC', '_name'))
             ->then
@@ -300,7 +300,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($column = $metadata->getColumnByKey('T_TEAM_TEA', '_notFound'))
             ->then
@@ -336,7 +336,7 @@ class Metadata extends atoum\test
         $targets = array('T_TEAM_TEA');
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($team = new \Team())
             ->and($team->setId(3))
@@ -354,7 +354,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($object = $metadata->mapToObjects(array(), array()))
             ->then
@@ -400,7 +400,7 @@ class Metadata extends atoum\test
         $targets = array('T_MATCH_MAT', 'T_TEAM_TEA teamHomeId');
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($match = new \Match())
             ->and($match->setId(7))
@@ -429,7 +429,7 @@ class Metadata extends atoum\test
         $stdClass->value    = 3;
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($object = $metadata->mapToObject(array($stdClass), 'T_TEAM_TEA', 'teamHome'))
             ->and($teamRef = new \Team())
@@ -445,7 +445,7 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($object = $metadata->mapToObject(null, 'T_TEAM_TEA', 'teamHome'))
             ->then
@@ -459,9 +459,9 @@ class Metadata extends atoum\test
     {
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
-            ->and($metadata2 = \Norm\Metadata::getInstance(ROOT . 'tests/model/*.php'))
+            ->and($metadata2 = \Norm\Metadata::getInstance(ROOT . 'tests/model'))
             ->then
                 ->object($metadata)
                 ->isIdenticalTo($metadata2);
@@ -484,7 +484,7 @@ class Metadata extends atoum\test
         $paramsRef = array('type' => 'string', 'name' => 'tea_name', 'a' => true, 'b' => false, 'c' => 3, 'd' => array('1', '2', '3'));
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($params = $metadata->parseComment($comment))
             ->and(ksort($params))
@@ -496,7 +496,7 @@ class Metadata extends atoum\test
         $comment = "/** Nothing */";
 
         $this
-            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model/*.php'))
+            ->if(\Norm\Configuration::getInstance()->setModel(ROOT . 'tests/model'))
             ->if($metadata = \Norm\Metadata::getInstance())
             ->and($params = $metadata->parseComment($comment))
             ->then

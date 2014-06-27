@@ -9,7 +9,13 @@ class Model
 
     private static $_metadata;
     private static $_staticQuery;
+    private static $_setted = array();
 
+    public static function getSetted()
+    {
+        return self::$_setted;
+
+    }
 
     protected static function _getQuery()
     {
@@ -162,10 +168,27 @@ class Model
             $type = 'auto';
         } else {
             $type = $columnInfo['type'];
+            $backtrace = debug_backtrace();
+
+            //We keep only setted from user's set, others came from object initialisation
+            list(, $caller) = debug_backtrace(false);
+
+            if ($action === 'set' && basename($caller["file"]) !== 'Metadata.php') {
+                array_push(self::$_setted, $columnInfo["name"]);
+            }
+            
         }
 
         if ($action === 'set') {
-            $this->$name = $this->_cast($value[0], $type);
+
+            $lazyNullForEmpty = false;
+
+            //allow to transform empty value to null
+            if (isset($value[1]) === true) {
+                $lazyNullForEmpty = $value[1];
+            }
+
+            $this->$name = $this->_cast($value[0], $type, $lazyNullForEmpty);
             return $this;
         } else {
             if (property_exists($this, $name) === false) {
@@ -199,14 +222,14 @@ class Model
     }
 
 
-    protected function _cast($value, $type)
+    protected function _cast($value, $type, $isNullForEmpty = false)
     {
 
         if (is_object($value) === true) {
             return $value;
         }
 
-        if ($value === null) {
+        if ($value === null or ($value === '' && $isNullForEmpty === true)) {
             return null;
         }
 
@@ -277,18 +300,26 @@ class Model
         $properties = get_object_vars($this);
         $columns = array();
 
-        foreach($properties as $name => $value) {
-            if ($value !== null) {
-                $columnInfo = $metadata->getColumnByName($table, $name);
-                if (isset($columnInfo['key']) === true) {
-                    $columns[$columnInfo['key']] = $value;
-                }
+        foreach(self::$_setted as $name) {
+
+            $value = $properties[$name];
+            $columnInfo = $metadata->getColumnByName($table, $name);
+
+            if (isset($columnInfo['key']) === true) {
+                $columns[$columnInfo['key']] = $value;
             }
         }
 
         $q = $this->getQuery();
 
+        $columns = array_replace($columns,
+                        array_fill_keys(
+                            array_keys($columns, null, true), new \Norm\Raw('null')
+                        )
+                    );
+
         if ($mode === 'insert') {
+
             $id = $q->insert($table)
                     ->set($columns)
                     ->execute();
@@ -302,13 +333,15 @@ class Model
             }
 
             unset($columns[$column['key']]);
-
+            
             // return is not an id
             $id = $q->update($table)
                     ->set($columns)
                     ->where($column['key'] . ' = :' . $column['key'], array(':' . $column['key'] => $this->$column['params']['name']))
                     ->execute();
         }
+
+        self::$_setted = array();
 
         if (is_numeric($id) === true) {
             if ($mode === 'insert') {

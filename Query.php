@@ -1,6 +1,6 @@
 <?php
 
-namespace Norm;
+namespace Norm {
 
 require_once 'Configuration.php';
 require_once 'Adapter/Driver/Mysqli/Mysqli.php';
@@ -26,7 +26,8 @@ class Query implements \Iterator, \Countable, Observer\Subject
         'having' => array(),
         'join'   => array(),
         'value'  => array(),
-        'set'    => array()
+        'set'    => array(),
+        'union'  => array()
     );
 
     protected $_config       = null;
@@ -145,6 +146,7 @@ class Query implements \Iterator, \Countable, Observer\Subject
 
         $this->_query['type'] = $this::TYPE_SELECT;
         $this->_query['target'] = $table;
+
         return $this;
 
     }
@@ -197,6 +199,15 @@ class Query implements \Iterator, \Countable, Observer\Subject
     {
 
         $this->_query['set']   = array_merge($this->_query['set'], $data);
+        return $this;
+
+    }
+
+
+    public function union(Query $q)
+    {
+        $this->_query['type'] = $this::TYPE_SELECT;
+        $this->_query['union'][] = $q;
         return $this;
 
     }
@@ -267,10 +278,10 @@ class Query implements \Iterator, \Countable, Observer\Subject
     }
 
 
-    public function limit($from, $to)
+    public function limit($limit, $offset)
     {
 
-        $this->_query['limit'] = array($from, $to);
+        $this->_query['limit'] = array($limit, $offset);
         return $this;
 
     }
@@ -341,7 +352,10 @@ class Query implements \Iterator, \Countable, Observer\Subject
                 $values = array();
 
                 foreach($this->_query['set'] as $key => $value) {
-                    $value = $this->_convertValue($value);
+                    if (is_string($value) === true) {
+                        $value = '\'' . Configuration::getInstance()->getConnection($this->_connection)->escape($value) . '\'';
+                    }
+
                     $values[] = $value;
                     $names[] = $key;
                 }
@@ -360,7 +374,11 @@ class Query implements \Iterator, \Countable, Observer\Subject
                 $columns = array();
 
                 foreach($this->_query['set'] as $key => $value) {
-                    $value = $this->_convertValue($value);
+                    //No escape on Raw object
+                    if (is_string($value) === true) {
+                        $value = '\'' . Configuration::getInstance()->getConnection($this->_connection)->escape($value) . '\'';
+                    }
+
                     $columns[] = $key . ' = ' . $value;
                 }
 
@@ -376,9 +394,27 @@ class Query implements \Iterator, \Countable, Observer\Subject
             case self::TYPE_SELECT:
                 $targets = array();
 
-                $sql = ' FROM ' . $this->_escapeField($this->_query['target']) . "\n";
+                $sql = ' FROM ';
+                
+                if (count($this->_query['union']) > 0) {
+         
+                    $sqlQuery = array();
+                    
+                    foreach($this->_query['union'] as $subQ) {
+                        
+                        $sqlQuery[] = $subQ->getSql(true);
+                        $this->_query['value'] = array_merge($this->_query['value'], $subQ->getValues());
+                        
+                    }
 
-                $this->_targets[] = $this->_query['target'];
+                    $sql .= '((' . implode(') UNION (' , $sqlQuery) . ')) as SQTT';
+                } elseif (is_object($this->_query['target']) === true) {
+                    $sql .= '(' . $this->_query['target']->getSql(true) . ') TMP' . "\n";
+                    $this->_query['value'] = array_merge($this->_query['target']->getValues(), $this->_query['value']);
+                } else {
+                    $sql .= $this->_escapeField($this->_query['target']) . "\n";
+                    $this->_targets[] = $this->_query['target'];
+                }
 
                 foreach ($this->_query['join'] as $join) {
                     $sql .= ' ' . strtoupper($join['type']) . ' JOIN ' . $this->_escapeField($join['table']) . ' ON (' . $join['condition'] . ')' . "\n";
@@ -402,7 +438,7 @@ class Query implements \Iterator, \Countable, Observer\Subject
                 }
 
                 if (isset($this->_query['limit']) === true) {
-                    $sql .= ' LIMIT ' . $this->_query['limit'][1] . ' OFFSET ' . $this->_query['limit'][0] . "\n";
+                    $sql .= ' LIMIT ' . $this->_query['limit'][0] . ' OFFSET ' . $this->_query['limit'][1] . "\n";
                 }
 
                 if (count($this->_query['select']) === 0) {
@@ -419,7 +455,6 @@ class Query implements \Iterator, \Countable, Observer\Subject
             break;
 
         }
-
 
         return $sql;
 
@@ -802,5 +837,31 @@ class Query implements \Iterator, \Countable, Observer\Subject
 
     }
 
+
+}
+
+function Raw($string) {
+    return new Raw($string);
+}
+
+class Raw {
+
+    private $_content = '';
+
+    public function __construct($string)
+    {
+
+        $this->_content = $string;
+
+    }
+
+    public function __toString()
+    {
+
+        return $this->_content;
+
+    }
+
+}
 
 }

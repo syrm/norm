@@ -18,7 +18,7 @@ class Mysqli implements \Norm\Adapter\Database
         $this->_connection = new \mysqli($hostname, $username, $password, $database);
 
         if (mysqli_connect_error()) {
-            throw new \Exception('Connect Error (' . mysqli_connect_errno() . ') '. mysqli_connect_error());
+            die('Connect Error mysql');
         }
 
         return $this;

@@ -778,6 +778,10 @@ class Query implements \Iterator, \Countable, Observer\Subject
             $value = '\'' . $value->format('Y-m-d H:i:s') . '\'';
         }
 
+        if ($value === null) {
+            $value = 'NULL';
+        }
+
         return $value;
 
     }

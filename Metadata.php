@@ -47,6 +47,7 @@ class Metadata implements Adapter\Metadata
             foreach(glob($directory . '/*.php') as $file) {
                 $next = null;
                 $data = array('T_NAMESPACE' => '');
+
                 foreach(token_get_all(file_get_contents($file)) as $element) {
                     if (is_array($element) === true) {
                         if (in_array($element[0], array(T_NAMESPACE, T_CLASS)) === true) {

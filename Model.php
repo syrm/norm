@@ -278,11 +278,9 @@ class Model
         $columns = array();
 
         foreach($properties as $name => $value) {
-            if ($value !== null) {
-                $columnInfo = $metadata->getColumnByName($table, $name);
-                if (isset($columnInfo['key']) === true) {
-                    $columns[$columnInfo['key']] = $value;
-                }
+            $columnInfo = $metadata->getColumnByName($table, $name);
+            if (isset($columnInfo['key']) === true) {
+                $columns[$columnInfo['key']] = $value;
             }
         }
 

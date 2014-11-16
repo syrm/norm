@@ -353,10 +353,6 @@ class Query implements \Iterator, \Countable, Observer\Subject
             case self::TYPE_UPDATE:
                 $sql = 'UPDATE ' . $this->_escapeField($this->_query['target']) . "\n";
 
-                if (count($this->_query['set']) === 0) {
-                    return null;
-                }
-
                 $columns = array();
 
                 foreach($this->_query['set'] as $key => $value) {
@@ -364,7 +360,9 @@ class Query implements \Iterator, \Countable, Observer\Subject
                     $columns[] = $key . ' = ' . $value;
                 }
 
-                $sql .= ' SET ' . implode(', ', $columns) . "\n";
+                if ($columns !== array()) {
+                    $sql .= ' SET ' . implode(', ', $columns) . "\n";
+                }
 
                 if (count($this->_query['where']) > 0) {
                     $sql .= ' WHERE (' . implode(') AND (', $this->_query['where']) . ')';
